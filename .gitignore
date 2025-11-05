@@ -1,0 +1,17 @@
+# Arquivos de ambiente
+.env
+.env.staging
+.env.production
+
+# Backups
+backups/
+
+# Configurações Nginx
+nginx/ssl/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

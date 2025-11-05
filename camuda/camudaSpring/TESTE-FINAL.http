@@ -1,0 +1,90 @@
+### 🚨 ATENÇÃO: URLs CORRETAS DO CAMUNDA
+
+# ============================================
+# 📌 INTERFACE WEB (Abrir no Navegador)
+# ============================================
+
+# ✅ Tasklist (Lista de Tarefas) - USE ESTA URL:
+# http://localhost:8080/camunda/app/tasklist/default/
+
+# ✅ Cockpit (Painel de Controle)  
+# http://localhost:8080/camunda/app/cockpit/default/
+
+# ✅ Admin (Administração)
+# http://localhost:8080/camunda/app/admin/default/
+
+# Login: admin / admin
+# ⚠️ Limpe o cache do navegador antes! (Ctrl+Shift+Delete)
+
+# ============================================
+# 📌 API REST - TESTES
+# ============================================
+
+### 1️⃣ Teste de Saúde - Verificar se API Camunda está funcionando
+GET http://localhost:8080/camunda/api/engine/engine/default/process-definition
+Accept: application/json
+
+###
+
+### 2️⃣ Iniciar Processo via API Customizada (Controller Java)
+POST http://localhost:8080/api/processo/iniciar
+Content-Type: application/json
+
+{
+  "solicitante": "João Silva",
+  "descricao": "Solicitação de aprovação de compra de equipamentos",
+  "valor": 5000.00
+}
+
+###
+
+### 3️⃣ Iniciar Processo via API Camunda Nativa
+POST http://localhost:8080/camunda/api/engine/engine/default/process-definition/key/processo-aprovacao/start
+Content-Type: application/json
+
+{
+  "variables": {
+    "solicitante": {
+      "value": "Maria Santos",
+      "type": "String"
+    },
+    "descricao": {
+      "value": "Aprovação de férias",
+      "type": "String"
+    },
+    "valor": {
+      "value": 3000.00,
+      "type": "Double"
+    }
+  }
+}
+
+###
+
+### 4️⃣ Listar Tarefas Ativas
+GET http://localhost:8080/camunda/api/engine/engine/default/task
+Accept: application/json
+
+###
+
+### 5️⃣ Listar Instâncias de Processo Ativas
+GET http://localhost:8080/camunda/api/engine/engine/default/process-instance
+Accept: application/json
+
+###
+
+# ============================================
+# 🚨 ERROS COMUNS E SOLUÇÕES
+# ============================================
+
+# ❌ ERRO 404 - "Whitelabel Error Page"
+# Causa: URL incorreta! Você está esquecendo o /camunda/ ou /api/
+# ✅ Solução: Use as URLs corretas acima com /camunda/app/tasklist/default/
+
+# ❌ ERRO "Connection refused" 
+# Causa: Aplicação NÃO está rodando (você apertou Ctrl+C)
+# ✅ Solução: Execute .\iniciar-camunda.bat e NÃO aperte Ctrl+C!
+
+# ❌ Interface não está em Português
+# Causa: Cache do navegador com versão antiga
+# ✅ Solução: Ctrl+Shift+Delete e limpe "Imagens e arquivos em cache"

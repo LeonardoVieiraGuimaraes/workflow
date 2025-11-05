@@ -1,0 +1,41 @@
+### Teste da API em Português (BR)
+### Iniciar Processo de Aprovação com Valores em Português
+
+POST http://localhost:8080/api/processo/iniciar
+Content-Type: application/json
+
+{
+  "solicitante": "João da Silva",
+  "descricao": "Compra de equipamentos de escritório",
+  "valor": 3500.00
+}
+
+###
+POST http://localhost:8080/api/processo/iniciar
+Content-Type: application/json
+
+{
+  "solicitante": "Maria Santos",
+  "descricao": "Aquisição de licenças de software",
+  "valor": 15000.00
+}
+
+###
+POST http://localhost:8080/api/processo/iniciar
+Content-Type: application/json
+
+{
+  "solicitante": "Carlos Pereira",
+  "descricao": "Serviços de consultoria",
+  "valor": 25000.00
+}
+
+### Teste com dados inválidos (deve rejeitar na validação)
+POST http://localhost:8080/api/processo/iniciar
+Content-Type: application/json
+
+{
+  "solicitante": "",
+  "descricao": "Teste de validação",
+  "valor": -100
+}

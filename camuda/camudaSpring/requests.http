@@ -1,0 +1,35 @@
+# Exemplos de requisições para testar a API
+
+## Iniciar Processo - Dados Válidos
+POST http://localhost:8080/api/processo/iniciar
+Content-Type: application/json
+
+{
+  "solicitante": "João Silva",
+  "descricao": "Compra de equipamentos de informática",
+  "valor": 5000.00
+}
+
+###
+
+## Iniciar Processo - Dados Inválidos (valor negativo)
+POST http://localhost:8080/api/processo/iniciar
+Content-Type: application/json
+
+{
+  "solicitante": "Maria Santos",
+  "descricao": "Contratação de serviço",
+  "valor": -100.00
+}
+
+###
+
+## Iniciar Processo - Dados Inválidos (sem solicitante)
+POST http://localhost:8080/api/processo/iniciar
+Content-Type: application/json
+
+{
+  "solicitante": "",
+  "descricao": "Teste sem solicitante",
+  "valor": 1000.00
+}

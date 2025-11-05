@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n-dev
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      # Host e Protocolo
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PORT=${N8N_PORT:-5678}
+      - N8N_PROTOCOL=${N8N_PROTOCOL:-http}
+      - WEBHOOK_URL=${WEBHOOK_URL:-http://localhost:5678/}
+      
+      # Autenticação (desabilitada para dev)
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE:-false}
+      
+      # Timezone e Idioma
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE:-America/Sao_Paulo}
+      - TZ=${GENERIC_TIMEZONE:-America/Sao_Paulo}
+      - N8N_DEFAULT_LOCALE=pt-BR
+      - LANG=pt_BR.UTF-8
+      - LANGUAGE=pt_BR:pt:en
+      
+      # Configurações de desenvolvimento
+      - N8N_LOG_LEVEL=${N8N_LOG_LEVEL:-debug}
+      - N8N_DIAGNOSTICS_ENABLED=${N8N_DIAGNOSTICS_ENABLED:-false}
+      
+    volumes:
+      - n8n_dev_data:/home/node/.n8n
+      - ./workflows:/home/node/workflows
+
+volumes:
+  n8n_dev_data:
+    driver: local
