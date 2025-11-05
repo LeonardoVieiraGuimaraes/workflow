@@ -15,3 +15,5 @@ Thumbs.db
 
 # Logs
 *.log
+camunda8/java/pom.xml
+camunda8/.gitignore
