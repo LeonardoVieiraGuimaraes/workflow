@@ -1,0 +1,9 @@
+com\exemplo\camunda\delegate\NotificarRejeicaoDelegate.class
+com\exemplo\camunda\config\LocaleConfig.class
+com\exemplo\camunda\controller\ProcessoController$SolicitacaoRequest.class
+com\exemplo\camunda\controller\ProcessoController.class
+com\exemplo\camunda\delegate\ProcessarAprovacaoDelegate.class
+com\exemplo\camunda\delegate\ValidarDadosDelegate.class
+com\exemplo\camunda\CamundaApplication.class
+com\exemplo\camunda\config\PortuguesLocalePlugin.class
+com\exemplo\camunda\dto\RespostaProcesso.class

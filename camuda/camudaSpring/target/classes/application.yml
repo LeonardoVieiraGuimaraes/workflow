@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: Sistema de Aprovação Camunda
+  
+  # Configuração de Localização para Português do Brasil
+  web:
+    locale: pt_BR
+    locale-resolver: fixed
+  
+  # Configuração de mensagens em Português
+  messages:
+    basename: messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+  
+  datasource:
+    # Configuração do H2 Database (em memória para desenvolvimento)
+    url: jdbc:h2:mem:camunda;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
+
+# Configurações do Camunda BPM
+camunda:
+  bpm:
+    # Credenciais de admin padrão
+    admin-user:
+      id: admin
+      password: admin
+      firstName: Administrador
+      lastName: Sistema
+    
+    # Configuração de idioma
+    default-serialization-format: application/json
+    
+    # Localização em Português
+    webapp:
+      index-redirect-enabled: false
+    
+    # Filtros de autorização
+    filter:
+      create: All tasks
+    
+    # Histórico completo
+    history-level: full
+    
+    # Configurações de banco de dados
+    database:
+      schema-update: true
+    
+    # Configurações de deploy automático de processos BPMN
+    auto-deployment-enabled: true
+
+# Configurações do servidor
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+# Configurações de logging
+logging:
+  level:
+    root: INFO
+    org.camunda: INFO
+    org.springframework: INFO
+    com.exemplo.camunda: DEBUG
