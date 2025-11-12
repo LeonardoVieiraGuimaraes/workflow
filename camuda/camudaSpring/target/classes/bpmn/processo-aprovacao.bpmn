@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
+  <bpmn:process id="processo-aprovacao" name="Processo de Aprovação" isExecutable="true" camunda:historyTimeToLive="P30D">
+    <bpmn:startEvent id="StartEvent_1" name="Iniciar Processo">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_PreencherSolicitacao" name="Preencher Solicitação" camunda:formRef="revisar-solicitacao" camunda:formRefBinding="latest" camunda:assignee="demo">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_ValidarDados" name="Validar Dados" camunda:delegateExpression="${validarDadosDelegate}">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_DadosValidos" name="Dados Válidos?">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_Sim</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Nao</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_AprovarSolicitacao" name="Aprovar Solicitação" camunda:formRef="aprovar-solicitacao" camunda:formRefBinding="latest" camunda:candidateGroups="gestores">
+      <bpmn:incoming>Flow_Sim</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_CorrigirDados" name="Corrigir Dados" camunda:assignee="demo">
+      <bpmn:incoming>Flow_Nao</bpmn:incoming>
+      <bpmn:outgoing>Flow_Correcao</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Aprovado" name="Aprovado?">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_Aprovado</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Rejeitado</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Activity_ProcessarAprovacao" name="Processar Aprovação" camunda:delegateExpression="${processarAprovacaoDelegate}">
+      <bpmn:incoming>Flow_Aprovado</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_NotificarRejeicao" name="Notificar Rejeição" camunda:delegateExpression="${notificarRejeicaoDelegate}">
+      <bpmn:incoming>Flow_Rejeitado</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_ProcessoConcluido" name="Processo Concluído">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_ProcessoRejeitado" name="Processo Rejeitado">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Activity_PreencherSolicitacao" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Activity_PreencherSolicitacao" targetRef="Activity_ValidarDados" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Activity_ValidarDados" targetRef="Gateway_DadosValidos" />
+    <bpmn:sequenceFlow id="Flow_Sim" name="Sim" sourceRef="Gateway_DadosValidos" targetRef="Activity_AprovarSolicitacao">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${dadosValidos == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_Nao" name="Não" sourceRef="Gateway_DadosValidos" targetRef="Activity_CorrigirDados">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${dadosValidos == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_Correcao" sourceRef="Activity_CorrigirDados" targetRef="Activity_ValidarDados" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Activity_AprovarSolicitacao" targetRef="Gateway_Aprovado" />
+    <bpmn:sequenceFlow id="Flow_Aprovado" name="Aprovado" sourceRef="Gateway_Aprovado" targetRef="Activity_ProcessarAprovacao">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${aprovado == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_Rejeitado" name="Rejeitado" sourceRef="Gateway_Aprovado" targetRef="Activity_NotificarRejeicao">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${aprovado == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Activity_ProcessarAprovacao" targetRef="Event_ProcessoConcluido" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Activity_NotificarRejeicao" targetRef="Event_ProcessoRejeitado" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="processo-aprovacao">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="130" y="145" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_PreencherSolicitacao_di" bpmnElement="Activity_PreencherSolicitacao">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_ValidarDados_di" bpmnElement="Activity_ValidarDados">
+        <dc:Bounds x="400" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DadosValidos_di" bpmnElement="Gateway_DadosValidos" isMarkerVisible="true">
+        <dc:Bounds x="555" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="542" y="65" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_AprovarSolicitacao_di" bpmnElement="Activity_AprovarSolicitacao">
+        <dc:Bounds x="660" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_CorrigirDados_di" bpmnElement="Activity_CorrigirDados">
+        <dc:Bounds x="530" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Aprovado_di" bpmnElement="Gateway_Aprovado" isMarkerVisible="true">
+        <dc:Bounds x="815" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="812" y="65" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_ProcessarAprovacao_di" bpmnElement="Activity_ProcessarAprovacao">
+        <dc:Bounds x="920" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_NotificarRejeicao_di" bpmnElement="Activity_NotificarRejeicao">
+        <dc:Bounds x="920" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_ProcessoConcluido_di" bpmnElement="Event_ProcessoConcluido">
+        <dc:Bounds x="1072" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1059" y="145" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_ProcessoRejeitado_di" bpmnElement="Event_ProcessoRejeitado">
+        <dc:Bounds x="1072" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1059" y="285" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="400" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="500" y="120" />
+        <di:waypoint x="555" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Sim_di" bpmnElement="Flow_Sim">
+        <di:waypoint x="605" y="120" />
+        <di:waypoint x="660" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="623" y="102" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Nao_di" bpmnElement="Flow_Nao">
+        <di:waypoint x="580" y="145" />
+        <di:waypoint x="580" y="220" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="586" y="180" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Correcao_di" bpmnElement="Flow_Correcao">
+        <di:waypoint x="530" y="260" />
+        <di:waypoint x="450" y="260" />
+        <di:waypoint x="450" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="760" y="120" />
+        <di:waypoint x="815" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Aprovado_di" bpmnElement="Flow_Aprovado">
+        <di:waypoint x="865" y="120" />
+        <di:waypoint x="920" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="869" y="102" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Rejeitado_di" bpmnElement="Flow_Rejeitado">
+        <di:waypoint x="840" y="145" />
+        <di:waypoint x="840" y="260" />
+        <di:waypoint x="920" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="846" y="200" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="1020" y="120" />
+        <di:waypoint x="1072" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="1020" y="260" />
+        <di:waypoint x="1072" y="260" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MyApp<spring-boot-example>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.activiti.MyApp",
+            "projectName": "spring-boot-example",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

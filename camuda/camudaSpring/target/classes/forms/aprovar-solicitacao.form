@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 9,
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "components": [
+    {
+      "text": "## ✅ Aprovação Final",
+      "type": "text",
+      "id": "titulo"
+    },
+    {
+      "text": "Esta solicitação foi revisada e aprovada. Confirme a aprovação final.",
+      "type": "text",
+      "id": "descricaoForm"
+    },
+    {
+      "text": "---",
+      "type": "text",
+      "id": "separador1"
+    },
+    {
+      "label": "Solicitante",
+      "type": "textfield",
+      "id": "solicitante",
+      "key": "solicitante",
+      "disabled": true
+    },
+    {
+      "label": "Descrição",
+      "type": "textarea",
+      "id": "descricao",
+      "key": "descricao",
+      "disabled": true
+    },
+    {
+      "label": "Valor (R$)",
+      "type": "number",
+      "id": "valor",
+      "key": "valor",
+      "disabled": true,
+      "decimalDigits": 2
+    },
+    {
+      "label": "Comentário da Revisão",
+      "type": "textarea",
+      "id": "comentarioRevisao",
+      "key": "comentarioRevisao",
+      "disabled": true
+    },
+    {
+      "text": "---",
+      "type": "text",
+      "id": "separador2"
+    },
+    {
+      "label": "Comentário Final de Aprovação",
+      "type": "textarea",
+      "id": "comentarioAprovacao",
+      "key": "comentarioAprovacao",
+      "description": "Adicione comentários finais (opcional)"
+    }
+  ],
+  "type": "default",
+  "id": "aprovar-solicitacao"
+}

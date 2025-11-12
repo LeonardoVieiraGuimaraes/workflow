@@ -1,0 +1,8 @@
+D:\GitHub\ProjetosPessoais\workflow\Camunda\src\main\java\com\exemplo\camunda\controller\ProcessoController.java
+D:\GitHub\ProjetosPessoais\workflow\Camunda\src\main\java\com\exemplo\camunda\delegate\ProcessarAprovacaoDelegate.java
+D:\GitHub\ProjetosPessoais\workflow\Camunda\src\main\java\com\exemplo\camunda\config\PortuguesLocalePlugin.java
+D:\GitHub\ProjetosPessoais\workflow\Camunda\src\main\java\com\exemplo\camunda\delegate\ValidarDadosDelegate.java
+D:\GitHub\ProjetosPessoais\workflow\Camunda\src\main\java\com\exemplo\camunda\config\LocaleConfig.java
+D:\GitHub\ProjetosPessoais\workflow\Camunda\src\main\java\com\exemplo\camunda\CamundaApplication.java
+D:\GitHub\ProjetosPessoais\workflow\Camunda\src\main\java\com\exemplo\camunda\delegate\NotificarRejeicaoDelegate.java
+D:\GitHub\ProjetosPessoais\workflow\Camunda\src\main\java\com\exemplo\camunda\dto\RespostaProcesso.java
