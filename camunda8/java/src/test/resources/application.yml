@@ -1,0 +1,5 @@
+camunda:
+  process-test:
+    camunda-docker-image-version: 8.8.0
+
+

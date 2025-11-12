@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProcessOrderApplication<process_order>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "io.camunda.demo.process_order.ProcessOrderApplication",
+            "projectName": "process_order",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
